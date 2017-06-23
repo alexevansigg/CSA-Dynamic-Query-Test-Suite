@@ -6,8 +6,7 @@
 ----
 
 This plugin allows a developer to run quick tests against stored configurations for dynamic query JSPs.
-The plugin itself will list all JSP scripts which are stored in the property sources folder
-
+The plugin itself will list all JSP scripts which are stored in the property sources folder.
 
 The following features are exposed in this plugin with the aim of enhancing the CSA Operations experience
 - __Inline Execute Dynamic Queries__
