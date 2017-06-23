@@ -60,17 +60,8 @@
 <head>
 <link rel="stylesheet" type="text/css" media="all" href="/csa/static/lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" media="all" href="static/prettify.css">
-<style>
-body {
-	margin: 0;
-	padding-top: 70px;
-	height: 100%;
-}
-ul, ol {
-  padding: 0;
-  margin: 0 0 10px 50px!important;
-}
-</style>
+  <link rel="stylesheet" type="text/css" media="all" href="css/dynamic-query-test-suite.css">
+
 </head>
   <body onload="prettyPrint()">
     <nav class="navbar navbar-default navbar-fixed-top">
