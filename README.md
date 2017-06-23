@@ -14,7 +14,6 @@ The following features are exposed in this plugin with the aim of enhancing the 
 - __Traffic Light Button Responses__
 - __Prettified XML Response__
 
-
 1. Create the folder custom-content (if it doesnt allready exist) in directory **<CSAHOME>/jboss-as/standalone/csa.war**
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
@@ -59,5 +58,10 @@ The following features are exposed in this plugin with the aim of enhancing the 
 5. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is allready authenticated with CSA, if its not an authenticated session it will redirect them to the login page.
 The plugin itself is allready trying to check the users roles via the script defined in the previous step (user.jsp). But this expects an authenticated user. Adding the below mentioned directive will prevent exceptions being thrown and errors written in the csa.log.
   ```xml
-  <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>
+  <intercept-url pattern="/custom-content/**" access="isAuthenticated()"/>
   ```
+
+6. In the same ```applicationContext-security.xml``` change the permissions to the property source folder so it can be accessed by the dynamic-query-test-suite.
+    ```xml
+    <intercept-url pattern="/propertysources/**"  access="isAuthenticated()"/>
+    ```
