@@ -21,7 +21,7 @@ $('#jsps button.test').on("click",function(){
     dataType: "text"
   })
   .done(function( data ) {
-    $("#myResponse").html("<pre class='prettyprint linenums languague-xml' style='min-height:580px;'>" + htmlSpecialChars(data) + "</pre>");
+    $("#myResponse").html("<pre class='prettyprint linenums languague-xml' style='min-height:580px; text-align:left'>" + htmlSpecialChars(data) + "</pre>");
       prettyPrint();
       /* Add the success class to this button to show its success */
      btn.addClass("btn-success");
@@ -35,17 +35,22 @@ $('#jsps button.test').on("click",function(){
 return false;
 });
 
-$('#jsps button.save').on("click",function(){
+$('#saveConfig').on("click",function(){
   var params = [];
   var rowList = $('#jsps .row-fluid');
   rowList.each(function(){
     var row = $(this);
     params.push(row.find("label").text() + "?" +  row.find("input").val());
   });
-
+  var configName = $('#configFileName').val();
   /* Ajax post back to self with saveConfig action */
-  $.post("/csa/propertysources/",{"action":"saveConfig","config":params.join("\n")}, function(data){
+  $.post("index.jsp",{"action":"saveConfig","configFileName":configName,"config":params.join("\n")}, function(data){
     alert(data);
   });
   return false;
+});
+
+$('#loadConfig').on("click",function(){
+  var configName = $('#configFileName').val();
+  window.href="index.jsp?configFileName=" + configName;
 });

@@ -1,42 +1,70 @@
+<%--
+  - Author(s): Alexander Evans
+  - Date: 23/06/2017
+  - @(#)
+  - Description: Dynamic Query Test Suite script should allow users to quicky run configurations against csa optionsets. .
+  --%>
+
 <%@page import="java.io.*" %>
-<%@page import="java.nio.*" %>
 <%@page import="java.util.*" %>
 <%
-  String requestedAction;
+
   String configPacket;
-  File jsp = new File(request.getSession().getServletContext().getRealPath(request.getServletPath()));
-  File plugin_home = jsp.getParentFile();
-  File property_sources = new File (plugin_home.getParentFile().getParentFile() + "/propertysources");
-  File[] list = property_sources.listFiles();
-  File conf = new File(plugin_home + "/conf/queries.properties");
-  Map<String, String> configMap = new HashMap<String, String>();
-  BufferedReader br;
   String line;
   String cfilename;
+  String confFilename;
   String myParam = "";
+  String[] parts;
+  String requestedAction = "nothing";
+  String requestedConfig = "default";
 
+  /* Build some directories */
+  File jsp = new File(request.getSession().getServletContext().getRealPath(request.getServletPath()));
+  File plugin_home = jsp.getParentFile();
+  File conf_dir = new File(plugin_home + "/conf/");
+  File property_sources = new File (plugin_home.getParentFile().getParentFile() + "/propertysources");
+
+  /* Initialize Reader/Writers */
+  FileWriter fw;
+  BufferedWriter bw;
+  BufferedReader br;
+
+  /* Build an Array of the JSP Files */
+  File[] list = property_sources.listFiles();
+
+  File[] configs = conf_dir.listFiles();
+  /* Load the requested action from the Post Request */
+  if (request.getParameterMap().containsKey("configFileName")){
+    requestedConfig = request.getParameter("configFileName");
+  }
+
+  /* Load the requested action from the Post Request */
   if (request.getParameterMap().containsKey("action")){
     requestedAction = request.getParameter("action");
-    if (requestedAction.equals("saveConfig")){
-      configPacket = request.getParameter("config");
+  }
 
-      if (!conf.exists()) {
-        conf.createNewFile();
-      }
+  /* Read the Config */
+  File conf = new File(conf_dir + "/" + requestedConfig + ".properties");
+  if (!conf.exists()) {
+    conf.createNewFile();
+  }
 
-      br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
-      FileWriter fw = new FileWriter(conf.getAbsoluteFile());
-      BufferedWriter bw = new BufferedWriter(fw);
-      bw.write(configPacket);
-      bw.close();
-      out.println("Configuration Saved");
-      return;
-    }
+  Map<String, String> configMap = new HashMap<String, String>();
+  if (requestedAction.equals("saveConfig")){
+    configPacket = request.getParameter("config");
+
+    br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
+    fw = new FileWriter(conf.getAbsoluteFile());
+    bw = new BufferedWriter(fw);
+    bw.write(configPacket);
+    bw.close();
+    out.println("Configuration Saved");
+    return;
   }
 
   try {
-    br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
 
+    br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
     while ((line = br.readLine()) != null) {
 
         String name = line.split("\\?")[0];
@@ -53,9 +81,7 @@
   } catch(Exception e){
     e.printStackTrace(response.getWriter());
   }
-
 %>
-
 <html>
 <head>
 <link rel="stylesheet" type="text/css" media="all" href="/csa/static/lib/bootstrap/css/bootstrap.min.css">
@@ -76,10 +102,42 @@
     	<a href="#" class="navbar-brand">Cloud Service Automation 4.X Dynamic Property Test Suite 1.0</a>
       </div>
     	<form class="navbar-form navbar-left" role="search">
-    		<div class="form-group">
-    		   <input name="configFileName" class="form-control" placeholder="Config Name">
-    		</div>
-    		<button id="saveConfig" class="btn btn-default">Save</button>
+
+        <div class="input-group">
+      	   <input id="configFileName" type="text" name="configFileName" class="form-control" placeholder="Config Name" value="<%=requestedConfig %>"/>
+           <div class="input-group-btn">
+             <button type="button" id="saveConfig" class="btn btn-primary">Save</button>
+             <button type="button" id="deleteConfig" class="btn btn-danger">Delete</button>
+             <button type="button" id="runConfig" class="btn btn-warning">Run All</button>
+
+              <button id ="loadConfig" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span>Load</span>
+                <span class="caret"></span>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <%
+                for (File confFile : configs) {
+                  /* Only list JSP files */
+                  confFilename = confFile.getName();
+          
+                  try{
+                      %><li><a href="#"><%=confFilename.replace(".properties","") %></a></li> <%
+                    }
+                    catch(Exception e){
+                      out.println("error");
+                    }
+                }
+                %>
+              </ul>
+
+
+
+
+
+
+          </div>
+        </div><!-- End of Input-group -->
     	</form>
       </div>
     </nav>
@@ -103,19 +161,23 @@
               }
               %>
 
-              <div class="row-fluid">
+              <div class="row-fluid jspRow">
                 <div class="col-sm-4">
                   <label><%=cfilename %></label>
                 </div>
-                <div class="col-sm-6 form-group">
-                  <input placeholder="parameters" type="text" class="form-control" value="<%=myParam %>">
-                </div>
-                <div class="col-sm-2">
-                  <div class="btn-group">
-                    <button class="test btn btn-primary btn-xs">Test</button>
-                    <button class="save btn btn-sm btn-xs">Save</button>
-                  </div>
-                </div>
+
+                <div class="col-lg-6">
+                  <div class="input-group">
+                      <input placeholder="parameters" type="text" class="form-control" value="<%=myParam %>">
+                      <span class="input-group-btn">
+                        <button class="test btn btn-primary" type="button">Test</button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div><!-- /.col-lg-6 -->
+
+
+
+
               </div>
             <%
             } // Close if jsp
@@ -127,7 +189,7 @@
 
 
 
-                                      [Test Response Loads Here]
+[Test Response Loads Here]
 
 
 
