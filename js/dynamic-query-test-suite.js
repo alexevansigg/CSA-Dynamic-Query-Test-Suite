@@ -46,11 +46,15 @@ $('#saveConfig').on("click",function(){
   /* Ajax post back to self with saveConfig action */
   $.post("index.jsp",{"action":"saveConfig","configFileName":configName,"config":params.join("\n")}, function(data){
     alert(data);
+
   });
   return false;
 });
-
-$('#loadConfig').on("click",function(){
+$('#deleteConfig').on("click",function(){
   var configName = $('#configFileName').val();
-  window.href="index.jsp?configFileName=" + configName;
+  $.post("index.jsp",{"action":"deleteConfig","configFileName":configName}, function(data){
+    alert(data);
+    window.location = window.location.pathname + window.location.hash;
+  });
+  return false;
 });

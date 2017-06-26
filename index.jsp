@@ -62,6 +62,21 @@
     return;
   }
 
+  if (requestedAction.equals("deleteConfig")){
+      //delete if exists
+      try {
+          conf.delete();
+          out.println("Config Deleted!");
+      } catch (IOException | SecurityException e) {
+          System.err.println(e);
+      }
+    return;
+  }
+
+
+
+
+
   try {
 
     br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
@@ -115,14 +130,15 @@
                 <span class="caret"></span>
               </button>
 
-              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <ul class="loadFilePicker dropdown-menu dropdown-menu-right" role="menu">
                 <%
                 for (File confFile : configs) {
                   /* Only list JSP files */
                   confFilename = confFile.getName();
-          
+
                   try{
-                      %><li><a href="#"><%=confFilename.replace(".properties","") %></a></li> <%
+
+                      %><li><a href="index.jsp?configFileName=<%=confFilename.replace(".properties","") %>"><%=confFilename.replace(".properties","") %></a></li> <%
                     }
                     catch(Exception e){
                       out.println("error");
