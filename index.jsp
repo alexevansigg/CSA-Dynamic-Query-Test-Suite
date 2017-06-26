@@ -8,7 +8,6 @@
 <%@page import="java.io.*" %>
 <%@page import="java.util.*" %>
 <%
-
   String configPacket;
   String line;
   String cfilename;
@@ -61,7 +60,6 @@
     out.println("Configuration Saved");
     return;
   }
-
   if (requestedAction.equals("deleteConfig")){
       //delete if exists
       try {
@@ -140,12 +138,6 @@
                 }
                 %>
               </ul>
-
-
-
-
-
-
           </div>
         </div><!-- End of Input-group -->
     	</form>
@@ -184,11 +176,7 @@
                       </span>
                     </div><!-- /input-group -->
                   </div><!-- /.col-lg-6 -->
-
-
-
-
-              </div>
+              </div><!-- /row-fluid jspRow -->
             <%
             } // Close if jsp
           } // Close file loop

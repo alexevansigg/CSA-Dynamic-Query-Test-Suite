@@ -58,3 +58,6 @@ $('#deleteConfig').on("click",function(){
   });
   return false;
 });
+$('#runConfig').on("click",function(){
+  $('#jsps button.test').trigger("click");
+});
