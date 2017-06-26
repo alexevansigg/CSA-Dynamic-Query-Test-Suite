@@ -73,15 +73,9 @@
     return;
   }
 
-
-
-
-
   try {
-
     br = new BufferedReader(new FileReader(conf.getAbsoluteFile()));
     while ((line = br.readLine()) != null) {
-
         String name = line.split("\\?")[0];
         String myvalue = "";
         try{
@@ -106,7 +100,7 @@
 </head>
   <body onload="prettyPrint()">
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
+      <div class="container">
       <div class="navbar-header">
     	<button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
     		<span class="sr-only">Toggle navigation</span>
@@ -159,7 +153,7 @@
     </nav>
 
     <div class="container-fluid">
-      <div class="row-fluid">
+      <div class="row">
         <div id="jsps" class="col-sm-6 img-thumbnail">
           <%
           for (File cfile : list) {
@@ -214,7 +208,7 @@
           </div>
         </div>
       </div>
-    </div>
+
     <script src="/csa/static/lib/jquery/jquery.min.js"></script>
     <script src="/csa/static/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/prettify.js"></script>

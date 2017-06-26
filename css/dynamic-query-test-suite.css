@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	padding-top: 70px;
-	height: 100%;
+
 }
 ul, ol {
   padding: 0;
@@ -11,7 +11,10 @@ ul, ol {
 #myResponse pre{
 	text-align:center;
 }
-
+#myResponse{
+	overflow-x: scroll;
+  max-height: 100%;
+}
 div.jspRow .col-lg-6{
 	margin-bottom:5px;
 }
